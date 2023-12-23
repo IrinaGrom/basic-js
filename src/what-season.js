@@ -12,21 +12,29 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 function getSeason(date) {
-  if (typeof date !== 'object') {return 'Invalid date!'};
-  // new Date(year, month, date, hours, minutes, seconds, ms)
-  // new Date(2011, 0, 1, 0, 0, 0, 0); // // 1 января 2011, 00:00:00
-  //let year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  //let day =date.getDate();
-  
-  if (month <= 2 || month == 12) {
-    return 'winter';
-  } else if (month <= 5) {
-    return 'spring';
-  } else if (month <= 8) {
-    return 'summer';
-  } else if (month <= 11) {
-    return 'autumn';
+  if (!date) {return 'Unable to determine the time of year!'};
+  if (date instanceof Date) { // проверяет, создан ли объект данной функцией
+    if (Object.prototype.toString.call(date) === '[object Date]') { //???
+      let month = date.getMonth() + 1;
+      if (month <= 2 || month == 12) {
+        return 'winter';
+      } else if (month <= 5) {
+        return 'spring';
+      } else if (month <= 8) {
+        return 'summer';
+      } else if (month <= 11) {
+        return 'autumn';
+      }
+      // console.log(date.getTime());
+      // test on: new Date('string')
+      if (typeof date.getMonth() !== 'function') {
+        throw new Error('Invalid date!');
+      }
+    } else {
+      throw new Error('Invalid date!');
+    }
+  } else {
+    throw new Error('Invalid date!');
   }
 }
 
